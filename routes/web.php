@@ -11,13 +11,18 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Illuminate\Http\Request $request) {
 
-	dispatch(new App\Jobs\LogSomething);
+	// dispatch(new App\Jobs\LogSomething);
 
-    return view('welcome');
+    // return view('welcome');
+    
+    Mail::to($request->user())->queue(new App\Mail\UserRegistration);
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/user/settings', 'UserSettingsController@edit');
+Route::put('/user/settings', 'UserSettingsController@update');
